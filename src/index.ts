@@ -6,7 +6,7 @@
  * Provides MCP tools for querying KFST decisions, merger control
  * cases, and sector enforcement activity under Konkurrenceloven.
  *
- * Tool prefix: de_comp_
+ * Tool prefix: dk_comp_
  */
 
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
@@ -54,7 +54,7 @@ const TOOLS = [
       properties: {
         query: {
           type: "string",
-          description: "Search query (e.g., 'Marktmissbrauch', 'Facebook Nutzerdaten', 'Preisabsprache')",
+          description: "Search query (e.g., 'misbrug af dominerende stilling', 'Facebook data', 'prisaftaler')",
         },
         type: {
           type: "string",
@@ -267,11 +267,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           name: SERVER_NAME,
           version: pkgVersion,
           description:
-            "KFST (Konkurrence- og Forbrugerstyrelsen MCP server. Provides access to German competition law enforcement decisions, merger control cases, and sector enforcement data under the Konkurrenceloven.",
+            "KFST (Konkurrence- og Forbrugerstyrelsen) MCP server. Provides access to Danish competition law enforcement decisions, merger control cases, and sector enforcement data under the Konkurrenceloven.",
           data_source: "KFST (https://www.kfst.dk/)",
           coverage: {
-            decisions: "Abuse of dominance (Marktmissbrauch), cartel enforcement, and sector inquiries",
-            mergers: "Merger control decisions (Fusionskontrolle) — Phase I and Phase II",
+            decisions: "Abuse of dominance (misbrug af dominerende stilling), cartel enforcement, and sector inquiries",
+            mergers: "Merger control decisions (Fusionskontrol) — Phase I and Phase II",
             sectors: "Digital economy, energy, food retail, automotive, financial services, healthcare, media, telecommunications",
           },
           tools: TOOLS.map((t) => ({ name: t.name, description: t.description })),
