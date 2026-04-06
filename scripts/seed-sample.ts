@@ -50,7 +50,7 @@ const insertSector = db.prepare("INSERT OR IGNORE INTO sectors (id, name, name_e
 for (const s of sectors) { insertSector.run(s.id, s.name, s.name_en, s.description, s.decision_count, s.merger_count); }
 console.log(`Inserted ${sectors.length} sectors`);
 
-interface DecisionRow { case_number: string; title: string; date: string; type: string; sector: string; parties: string; summary: string; full_text: string; outcome: string; fine_amount: number | null; gwb_articles: string; status: string; }
+interface DecisionRow { case_number: string; title: string; date: string; type: string; sector: string; parties: string; summary: string; full_text: string; outcome: string; fine_amount: number | null; kl_articles: string; status: string; }
 
 const decisions: DecisionRow[] = [
   {
@@ -61,7 +61,7 @@ const decisions: DecisionRow[] = [
     summary: "Konkurrence- og Forbrugerstyrelsen undersogte om Coop Danmark misbrugte sin dominerende stilling pa det danske dagligvaremarked gennem loyalitetsrabatter og eksklusivitetsaftaler med leverandorer, der kunne begranse konkurrencen fra udbydere udenfor det traditionelle dagligvaresegment.",
     full_text: "Konkurrence- og Forbrugerstyrelsen (KFST) abnede en undersoegelse af Coop Danmark A/S adfaerd pa det danske dagligvaremarked i henhold til Konkurrencelovens paragraf 11 og Artikel 102 TEUF. Det danske dagligvaremarked er et oligopol domineret af Salling Group (Bilka, Fotex, Netto, Salling), Coop Danmark (Kvickly, SuperBrugsen, Irma, Dagli Brugsen, 365discount) og Aldi og Lidl. KFST undersogte om Coops aftaler med leverandorer indeholdt betingelser, der vanskeliggjorde adgangen for discountforretninger og online dagligvareplatforme til at konkurrere pa gyldige vilkar. Specifikke problemstillinger: (1) Loyalitetsrabatter betinget af at leverandorer ikke matte levere til konkurrerende forhandlere pa mere gunstige vilkar. (2) Mest-gunstigste-klausuler (MFN-klausuler) der sikrede Coop mindst lige sa lave priser som Coops lavest prissatte konkurrenter. (3) Informationsudveksling om konkurrenters indkobspriser via leverandorfaellesskaber. KFST vurderede, at visse af disse aftaler kunne udgore misbrug af dominerende stilling. Coop accepterede at modificere sine leverandoraftaler og fjerne de mest problematiske klausuler. KFST afsluttede sagen med tilsagn.",
     outcome: "cleared_with_conditions", fine_amount: null,
-    gwb_articles: JSON.stringify(["paragraf 11 KonkurrenceLoven", "Artikel 102 TEUF"]), status: "final",
+    kl_articles: JSON.stringify(["paragraf 11 KonkurrenceLoven", "Artikel 102 TEUF"]), status: "final",
   },
   {
     case_number: "KFST/2022/002",
@@ -71,7 +71,7 @@ const decisions: DecisionRow[] = [
     summary: "KFST pa alagde boeder til MT Hojgaard, Aarsleff og NCC Danmark for deltagelse i budfusk (bid rigging) ved offentlige udbudsprocesser for anlaegsopgaver. Virksomhederne koordinerede bud og udpegede vindere pa forhand.",
     full_text: "Konkurrence- og Forbrugerstyrelsen afsluttede en undersoegelse af budfusk i den danske byggesektor. KFST og Statsadvokaten for Saerlig Kriminalitet (SSK) samarbejdede om undersoegelsen, der startede med brancheanmeldte overtraedelser. Det konstaterede kartelbud: Virksomhederne deltog i et systematisk system for koordinering af bud ved offentlige udbudsprocesser for anlaegsopgaver. (1) Forud-koordinering — virksomhederne kommunikerede forinden tilbudsfrister om, hvilken virksomhed der skulle vinde det paeldende udbud. (2) Ddaekningsbud — de ovrige deltagere indleverede bevidst ikke-konkurrencedygtige bud for at simulere reel konkurrence. (3) Kompensationsaftaler — tabende parter modtog kompensation i form af underentreprise-kontrakter fra den vindende part. Pavirkte udbud: Vej- og broopgaver, kloakering, havnearbejder og offentlige bygninger i perioden 2015-2021. KFST pa alagde virksomhedsboderne pa i alt 112 millioner DKK. SSK rejste tiltalte mod en ra kke enkeltpersoner for overtraedelse af straffelovens bestemmelser om karteller.",
     outcome: "fine", fine_amount: 15_000_000,
-    gwb_articles: JSON.stringify(["paragraf 6 KonkurrenceLoven", "Artikel 101 TEUF"]), status: "appealed",
+    kl_articles: JSON.stringify(["paragraf 6 KonkurrenceLoven", "Artikel 101 TEUF"]), status: "appealed",
   },
   {
     case_number: "KFST/2023/001",
@@ -81,7 +81,7 @@ const decisions: DecisionRow[] = [
     summary: "KFST gennemforte en markedsundersoegelse af digitale platforme pa det danske marked, herunder e-handelsplatforme, bookingplatforme og digitale annonceringsmarkeder. Undersoegelsen analyserede konkurrencestrukturen og implikationerne af EU's Digital Markets Act.",
     full_text: "Konkurrence- og Forbrugerstyrelsen igangsatte en markedsundersoegelse af digitale platforme i Danmark i henhold til Konkurrencelovens paragraf 12a. Danmark er en af Europas mest digitaliserede okonomier med en hoej andel af e-handel og digitale tjenester. Undersoegelsen daekte tre omrader: (1) E-handelsplatforme — markedsstrukturen for platforme som Coolshop, Elgiganten.dk og internationale platforme. Undersoegelsen analyserede provisionsstrukturer, rangordningsalgoritmer og brug af handlerdata for at forbedre egen-varesalg. (2) Bookingplatforme for rejser og overnatning — fokus pa Booking.com, Hotels.com og lokale portaler, og disses indvirkning pa hotellers og rejsebureauers muligheder for at konkurrere direkte. (3) Digitale annonceringsmarkeder — det programmatiske annonceokosystem pa det danske marked. KFST fandt, at digitale platforme har saerlige karakteristika der skaber network effects og tippling points. Undersoegelsens konklusioner dannede grundlag for KFST's bidrag til EU's Digital Markets Act (DMA) og til den nationalt fastsatte implementeringsramme.",
     outcome: "cleared", fine_amount: null,
-    gwb_articles: JSON.stringify(["paragraf 12a KonkurrenceLoven", "DMA"]), status: "final",
+    kl_articles: JSON.stringify(["paragraf 12a KonkurrenceLoven", "DMA"]), status: "final",
   },
   {
     case_number: "KFST/2023/002",
@@ -91,7 +91,7 @@ const decisions: DecisionRow[] = [
     summary: "KFST undersogte om de stoerste danske realkreditinstitutter udvekslede konkurrencefolgsom information om renter og bidragssatser pa realkreditobligationer, hvilket potentielt lette koordination og haeving af priser over for danske boligejere.",
     full_text: "Konkurrence- og Forbrugerstyrelsen gennemforte en undersoegelse af informationsudveksling blandt realkreditinstitutter i Danmark i henhold til Konkurrencelovens paragraf 6 og Artikel 101 TEUF. Det danske realkreditmarked er unikt i europaeisk sammenhang med specialiserede realkreditinstitutter der udsteder realkreditobligationer. De stoerste aktorer — Nykredit, Realkredit Danmark og BRFkredit — har samlet set en dominerende position pa markedet for realkreditlan til private boligejere. KFST undersogte om informationsudveksling, der foregik bade via brancheorganisationen Realkreditraadet og via direkte kontakter, var af en saadan art og detaljeringsgrad at den kunne facilitere koordination af renter og bidragssatser. Spesifikke problemstillinger: (1) Udveksling af fremadrettede oplysninger om planlagte renteaendringer. (2) Koordination af bidragssatser (det gebyr institutter opkraever oven pa obligationsrenten). (3) Timing af prisaendringer der viste hoej korrelation. KFST vurderede, at visse former for informationsudveksling var i strid med konkurrencereglerne. Institutterne accepterede at aendre deres praksis og ophoere med udvalgte former for informationsudveksling.",
     outcome: "cleared_with_conditions", fine_amount: null,
-    gwb_articles: JSON.stringify(["paragraf 6 KonkurrenceLoven", "Artikel 101 TEUF"]), status: "final",
+    kl_articles: JSON.stringify(["paragraf 6 KonkurrenceLoven", "Artikel 101 TEUF"]), status: "final",
   },
   {
     case_number: "KFST/2024/001",
@@ -101,12 +101,12 @@ const decisions: DecisionRow[] = [
     summary: "KFST gennemforte en markedsundersoegelse af privathospitaler og speciallaegeklinikker i Danmark. Undersoegelsen analyserede prissaetning, kvalitetskonkurrence, forsikringsselskabernes indflydelse og geografiske konkurrenceforhold.",
     full_text: "Konkurrence- og Forbrugerstyrelsen igangsatte en markedsundersoegelse af det private hospitalssegment i Danmark. Privatsygehussektoren i Danmark er vokset betydeligt i takt med oeget sundhedsforsikringsdaekning og la ngere ventetider i det offentlige sygehusvae sen. Undersoegelsen daekte: (1) Markedsstruktur — antallet og stoerrelsen af private hospitaler og klinikker, herunder nyankomne aktorer og konsolidering i branchen. Goupil, Aleris og Mols Klinikken er eksempler pa stoerre private aktorer. (2) Prissaetning — om priser for elektive indgreb er gennemsigtige for forbrugerne, og om prisdifferentiering mellem patientgrupper (kontant, forsikring, pensions-finansieret) er gennemsigtig. (3) Forsikringsselskabernes rolle — om forsikringsselskabernes forhandlingsstyrke overfor hospitalerne skaber en tilstrae kkelig modvaegt, eller om der eksisterer koordination om priser via forsikringsaftaler. (4) Kvalitetskonkurrence — om markedet fungerer pa en made der stimulerer quality competition, eller om manglende gennemsigtighed haeummer dette. KFST anbefalede oget prisgennemsigtighed og standardiserede kvalitetsindikatorer for privathospitaler.",
     outcome: "cleared", fine_amount: null,
-    gwb_articles: JSON.stringify(["paragraf 12a Konkurrencenloven"]), status: "ongoing",
+    kl_articles: JSON.stringify(["paragraf 12a Konkurrencenloven"]), status: "ongoing",
   },
 ];
 
-const insertDecision = db.prepare("INSERT OR IGNORE INTO decisions (case_number, title, date, type, sector, parties, summary, full_text, outcome, fine_amount, gwb_articles, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-const insertDecisionsAll = db.transaction(() => { for (const d of decisions) { insertDecision.run(d.case_number, d.title, d.date, d.type, d.sector, d.parties, d.summary, d.full_text, d.outcome, d.fine_amount, d.gwb_articles, d.status); } });
+const insertDecision = db.prepare("INSERT OR IGNORE INTO decisions (case_number, title, date, type, sector, parties, summary, full_text, outcome, fine_amount, kl_articles, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+const insertDecisionsAll = db.transaction(() => { for (const d of decisions) { insertDecision.run(d.case_number, d.title, d.date, d.type, d.sector, d.parties, d.summary, d.full_text, d.outcome, d.fine_amount, d.kl_articles, d.status); } });
 insertDecisionsAll();
 console.log(`Inserted ${decisions.length} decisions`);
 
