@@ -57,7 +57,7 @@ const TOOLS = [
     inputSchema: {
       type: "object" as const,
       properties: {
-        query: { type: "string", description: "Search query (e.g., 'Marktmissbrauch', 'Facebook', 'Preisabsprache')" },
+        query: { type: "string", description: "Search query (e.g., 'misbrug af dominerende stilling', 'Facebook', 'prisaftaler')" },
         type: {
           type: "string",
           enum: ["abuse_of_dominance", "cartel", "merger", "sector_inquiry"],
@@ -237,7 +237,7 @@ function createMcpServer(): Server {
             name: SERVER_NAME,
             version: pkgVersion,
             description:
-              "KFST (Konkurrence- og Forbrugerstyrelsen MCP server. Provides access to German competition law enforcement decisions, merger control cases, and sector enforcement data under the Konkurrenceloven.",
+              "KFST (Konkurrence- og Forbrugerstyrelsen) MCP server. Provides access to Danish competition law enforcement decisions, merger control cases, and sector enforcement data under the Konkurrenceloven.",
             data_source: "KFST (https://www.kfst.dk/)",
             tools: TOOLS.map((t) => ({ name: t.name, description: t.description })),
           });
