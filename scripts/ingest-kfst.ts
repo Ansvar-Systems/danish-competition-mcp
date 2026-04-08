@@ -94,7 +94,7 @@ interface ParsedDecision {
   full_text: string;
   outcome: string | null;
   fine_amount: number | null;
-  gwb_articles: string | null;
+  kl_articles: string | null;
   status: string;
 }
 
@@ -1097,7 +1097,7 @@ function parsePage(
       full_text: bodyText,
       outcome: outcome ?? (fineAmount ? "fine" : "pending"),
       fine_amount: fineAmount,
-      gwb_articles:
+      kl_articles:
         legalArticles.length > 0 ? JSON.stringify(legalArticles) : null,
       status,
     },
@@ -1213,14 +1213,14 @@ function initDb(): Database.Database {
 function prepareStatements(db: Database.Database) {
   const insertDecision = db.prepare(`
     INSERT OR IGNORE INTO decisions
-      (case_number, title, date, type, sector, parties, summary, full_text, outcome, fine_amount, gwb_articles, status)
+      (case_number, title, date, type, sector, parties, summary, full_text, outcome, fine_amount, kl_articles, status)
     VALUES
       (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   const upsertDecision = db.prepare(`
     INSERT INTO decisions
-      (case_number, title, date, type, sector, parties, summary, full_text, outcome, fine_amount, gwb_articles, status)
+      (case_number, title, date, type, sector, parties, summary, full_text, outcome, fine_amount, kl_articles, status)
     VALUES
       (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(case_number) DO UPDATE SET
@@ -1233,7 +1233,7 @@ function prepareStatements(db: Database.Database) {
       full_text = excluded.full_text,
       outcome = excluded.outcome,
       fine_amount = excluded.fine_amount,
-      gwb_articles = excluded.gwb_articles,
+      kl_articles = excluded.kl_articles,
       status = excluded.status
   `);
 
@@ -1393,7 +1393,7 @@ async function main(): Promise<void> {
             decision.full_text,
             decision.outcome,
             decision.fine_amount,
-            decision.gwb_articles,
+            decision.kl_articles,
             decision.status,
           );
           console.log(`  INSERTED decision: ${decision.case_number}`);

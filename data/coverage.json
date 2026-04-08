@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "name": "KFST — Konkurrence- og Forbrugerstyrelsen",
+    "url": "https://www.kfst.dk/",
+    "jurisdiction": "DK",
+    "legal_basis": ["Konkurrenceloven", "TEUF Art. 101-102"]
+  },
+  "tables": {
+    "decisions": {
+      "types": ["abuse_of_dominance", "cartel", "sector_inquiry"],
+      "outcomes": ["prohibited", "cleared", "cleared_with_conditions", "fine"],
+      "coverage_start": "2010-01-01",
+      "coverage_notes": "Published KFST enforcement decisions. Pre-2010 decisions have limited coverage."
+    },
+    "mergers": {
+      "phases": ["cleared_phase1", "cleared_with_conditions", "prohibited"],
+      "coverage_start": "2010-01-01",
+      "coverage_notes": "Published KFST merger control decisions."
+    },
+    "sectors": {
+      "ids": [
+        "digital_economy",
+        "food_retail",
+        "energy",
+        "financial_services",
+        "telecommunications",
+        "healthcare",
+        "construction",
+        "media"
+      ]
+    }
+  },
+  "known_gaps": [
+    "Decisions not yet published on kfst.dk",
+    "Ongoing non-final decisions may have incomplete data",
+    "Pre-2010 decisions have limited coverage",
+    "SSK criminal prosecution details not included",
+    "EU Commission decisions affecting Danish markets not included"
+  ],
+  "last_updated": "2026-04-06"
+}
