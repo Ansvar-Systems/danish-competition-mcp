@@ -1,11 +1,11 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# German Competition MCP — multi-stage Dockerfile
+# Danish Competition MCP — multi-stage Dockerfile
 # ─────────────────────────────────────────────────────────────────────────────
 # Build:  docker build -t danish-competition-mcp .
 # Run:    docker run --rm -p 3000:3000 danish-competition-mcp
 #
-# The image expects a pre-built database at /app/data/bundeskartellamt.db.
-# Override with BKARTA_DB_PATH for a custom location.
+# The image expects a pre-built database at /app/data/kfst.db.
+# Override with KFST_DB_PATH for a custom location.
 # ─────────────────────────────────────────────────────────────────────────────
 
 # --- Stage 1: Build TypeScript ---
@@ -23,7 +23,7 @@ FROM node:20-slim AS production
 
 WORKDIR /app
 ENV NODE_ENV=production
-ENV BKARTA_DB_PATH=/app/data/bundeskartellamt.db
+ENV KFST_DB_PATH=/app/data/kfst.db
 
 COPY package.json package-lock.json* ./
 RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force

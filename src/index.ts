@@ -6,7 +6,7 @@
  * Provides MCP tools for querying KFST decisions, merger control
  * cases, and sector enforcement activity under Konkurrenceloven.
  *
- * Tool prefix: de_comp_
+ * Tool prefix: dk_comp_
  */
 
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
@@ -55,7 +55,7 @@ const TOOLS = [
       properties: {
         query: {
           type: "string",
-          description: "Search query (e.g., 'Marktmissbrauch', 'Facebook Nutzerdaten', 'Preisabsprache')",
+          description: "Search query (e.g., 'misbrug af dominerende stilling', 'Facebook data', 'prisaftaler')",
         },
         type: {
           type: "string",
@@ -157,6 +157,26 @@ const TOOLS = [
       required: [],
     },
   },
+  {
+    name: "dk_comp_list_sources",
+    description:
+      "Return authoritative data sources used by this server: source name, URL, record counts, and last ingestion date.",
+    inputSchema: {
+      type: "object" as const,
+      properties: {},
+      required: [],
+    },
+  },
+  {
+    name: "dk_comp_check_data_freshness",
+    description:
+      "Return per-source data freshness status including last updated date and staleness warnings.",
+    inputSchema: {
+      type: "object" as const,
+      properties: {},
+      required: [],
+    },
+  },
 ];
 
 // --- Zod schemas for argument validation --------------------------------------
@@ -186,10 +206,21 @@ const GetMergerArgs = z.object({
 
 // --- Helper ------------------------------------------------------------------
 
-function textContent(data: unknown) {
+const META = {
+  disclaimer:
+    "Data sourced from KFST (Konkurrence- og Forbrugerstyrelsen). For informational use only; not legal advice.",
+  copyright: "© Konkurrence- og Forbrugerstyrelsen (kfst.dk)",
+  source_url: "https://www.kfst.dk/",
+};
+
+function textContent(data: unknown, dataAge?: string) {
+  const payload = {
+    _meta: { ...META, data_age: dataAge ?? "unknown" },
+    ...(typeof data === "object" && data !== null ? data : { data }),
+  };
   return {
     content: [
-      { type: "text" as const, text: JSON.stringify(data, null, 2) },
+      { type: "text" as const, text: JSON.stringify(payload, null, 2) },
     ],
   };
 }
@@ -288,14 +319,65 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           name: SERVER_NAME,
           version: pkgVersion,
           description:
-            "KFST (Konkurrence- og Forbrugerstyrelsen MCP server. Provides access to German competition law enforcement decisions, merger control cases, and sector enforcement data under the Konkurrenceloven.",
+            "KFST (Konkurrence- og Forbrugerstyrelsen) MCP server. Provides access to Danish competition law enforcement decisions, merger control cases, and sector enforcement data under the Konkurrenceloven.",
           data_source: "KFST (https://www.kfst.dk/)",
           coverage: {
-            decisions: "Abuse of dominance (Marktmissbrauch), cartel enforcement, and sector inquiries",
-            mergers: "Merger control decisions (Fusionskontrolle) — Phase I and Phase II",
+            decisions: "Abuse of dominance (misbrug af dominerende stilling), cartel enforcement, and sector inquiries",
+            mergers: "Merger control decisions (Fusionskontrol) — Phase I and Phase II",
             sectors: "Digital economy, energy, food retail, automotive, financial services, healthcare, media, telecommunications",
           },
           tools: TOOLS.map((t) => ({ name: t.name, description: t.description })),
+        });
+      }
+
+      case "dk_comp_list_sources": {
+        const db = (await import("./db.js")).getDb();
+        const decisionCount = (db.prepare("SELECT count(*) as cnt FROM decisions").get() as { cnt: number }).cnt;
+        const mergerCount = (db.prepare("SELECT count(*) as cnt FROM mergers").get() as { cnt: number }).cnt;
+        const sectorCount = (db.prepare("SELECT count(*) as cnt FROM sectors").get() as { cnt: number }).cnt;
+        const lastIngested = (db.prepare(
+          "SELECT MAX(date) as last_date FROM decisions"
+        ).get() as { last_date: string | null }).last_date;
+        return textContent({
+          sources: [
+            {
+              name: "KFST — Konkurrence- og Forbrugerstyrelsen",
+              url: "https://www.kfst.dk/",
+              record_counts: {
+                decisions: decisionCount,
+                mergers: mergerCount,
+                sectors: sectorCount,
+              },
+              last_ingestion_date: lastIngested ?? "unknown",
+            },
+          ],
+        });
+      }
+
+      case "dk_comp_check_data_freshness": {
+        const db = (await import("./db.js")).getDb();
+        const lastIngested = (db.prepare(
+          "SELECT MAX(date) as last_date FROM decisions"
+        ).get() as { last_date: string | null }).last_date;
+        const today = new Date().toISOString().split("T")[0]!;
+        const daysSince = lastIngested
+          ? Math.floor((Date.now() - new Date(lastIngested).getTime()) / 86_400_000)
+          : null;
+        const stale = daysSince !== null && daysSince > 90;
+        return textContent({
+          sources: [
+            {
+              name: "KFST — Konkurrence- og Forbrugerstyrelsen",
+              url: "https://www.kfst.dk/",
+              last_updated: lastIngested ?? "unknown",
+              checked_at: today,
+              days_since_update: daysSince,
+              status: lastIngested === null ? "no_data" : stale ? "stale" : "fresh",
+              warning: stale
+                ? `Data may be outdated — last ingestion was ${daysSince} days ago. Re-run npm run ingest to refresh.`
+                : null,
+            },
+          ],
         });
       }
 

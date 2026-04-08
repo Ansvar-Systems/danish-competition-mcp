@@ -2,8 +2,8 @@
  * SQLite database access layer for the KFST (Danish Competition) MCP server.
  *
  * Schema:
- *   - decisions    — Bundeskartellamt enforcement decisions (abuse of dominance, cartels, sector inquiries)
- *   - mergers      — Merger control decisions (Fusionskontrolle)
+ *   - decisions    — KFST enforcement decisions (abuse of dominance, cartels, sector inquiries)
+ *   - mergers      — Merger control decisions (Fusionskontrol)
  *   - sectors      — Sectors with enforcement activity
  *
  * FTS5 virtual tables back full-text search on decisions and mergers.
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS decisions (
   full_text    TEXT    NOT NULL,
   outcome      TEXT,
   fine_amount  REAL,
-  gwb_articles TEXT,
+  kl_articles  TEXT,
   status       TEXT    DEFAULT 'final'
 );
 
@@ -126,7 +126,7 @@ export interface Decision {
   full_text: string;
   outcome: string | null;
   fine_amount: number | null;
-  gwb_articles: string | null;
+  kl_articles: string | null;
   status: string;
 }
 
